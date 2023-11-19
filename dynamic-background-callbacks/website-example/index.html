@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typebot Callback Demo</title>
+  <style>
+    .ken-burns-container {
+      width: 100vw;
+      height: 110vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .ken-burns-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      animation: kenBurnsZoomIn 20s ease-in-out 1 forwards;
+      transition: opacity 1s ease-in-out; /* Smooth transition for image change */
+      opacity: 1;
+    }
+
+    .ken-burns-container img.fade-out {
+      opacity: 0;
+    }
+
+    @keyframes kenBurnsZoomIn {
+      0% { transform: scale(1.0); }
+      100% { transform: scale(1.15) translate(-5%, -5%); }
+    }
+  </style>
+</head>
+<body>
+  <div class="ken-burns-container">
+    <img id="backgroundImage" src="bg-1.jpg" alt="Background Image">
+  </div>
+  <script type="module">
+    import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.2/dist/web.js'
+
+    Typebot.initPopup({
+      typebot: "guest-feedback-survey-demo-wnbskpk",
+      prefilledVariables: {
+        "cabin_name": "Beach Retreat",
+        'first_name': "Satoshi",
+      },
+      autoShowDelay: 1000,
+      onNewInputBlock: (inputBlock) => {
+        console.log('New input block displayed', inputBlock.id)
+      },
+      onAnswer: (answer) => {
+        console.log('Answer received', answer.message, answer.blockId)
+        const backgroundImage = document.getElementById('backgroundImage');
+        if (answer.blockId === "clcrb4kx8000v3b6mudh73ho6" && answer.message.includes("worse")) {
+          backgroundImage.classList.add('fade-out');
+          setTimeout(() => {
+            backgroundImage.src = "sorry.jpg";
+            backgroundImage.classList.remove('fade-out');
+          }, 1000); // Change image after 1 second (transition duration)
+        }
+      },
+      onInit: () => {
+        console.log('Bot initialized')
+      },
+      onEnd: () => {
+        backgroundImage.classList.add('fade-out');
+          setTimeout(() => {
+            backgroundImage.src = "thank-you.jpg";
+            backgroundImage.classList.remove('fade-out');
+          }, 1000); // Change image to 'thank-you.jpg' after fade-out
+      },
+    });
+  </script>
+</body>
+</html>
