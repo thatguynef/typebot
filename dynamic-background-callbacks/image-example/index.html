@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Typebot Callback Demo</title>
+  <title>Typebot Callback Demo - Dynamic Image Background</title>
   <style>
     * {
       margin: 0;
@@ -49,7 +49,7 @@
 </head>
 <body>
   <div class="ken-burns-container">
-    <img id="backgroundImage" class="kenBurnsZoomIn" src="bg-1.jpg" alt="Background Image">
+    <img id="backgroundImage" class="kenBurnsZoomIn" src="bg.jpg" alt="Background Image">
   </div>
   <script type="module">
     import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.2/dist/web.js'
@@ -85,7 +85,15 @@
       onAnswer: (answer) => {
         console.log('Answer received', answer.message, answer.blockId)
         if (answer.blockId === "clcrb4kx8000v3b6mudh73ho6" && answer.message.includes("worse")) {
-          changeImageAndRestartAnimation("sorry.jpg");
+          changeImageAndRestartAnimation("worse.jpg");
+        }
+        // Added conditional check for "better" and specific blockId
+        if (answer.blockId === "clcrb4kx8000v3b6mudh73ho6" && answer.message.includes("better")) {
+          changeImageAndRestartAnimation("better.jpg");
+        }
+        // Added conditional check for "better" and specific blockId
+        if (answer.blockId === "clcrb4kx8000v3b6mudh73ho6" && answer.message.includes("same")) {
+          changeImageAndRestartAnimation("same.jpg");
         }
       },
       onInit: () => {
@@ -98,3 +106,6 @@
   </script>
 </body>
 </html>
+
+
+

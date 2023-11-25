@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typebot Callback Demo - Dynamic Video Background</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .video-container {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <div class="video-container">
+    <video id="backgroundVideo" autoplay loop muted>
+      <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+    </video>
+  </div>
+  <script type="module">
+    import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0.2/dist/web.js'
+
+    function changeVideo(newVideoSrc) {
+      const backgroundVideo = document.getElementById('backgroundVideo');
+      backgroundVideo.src = newVideoSrc;
+      backgroundVideo.play(); // Ensure the video starts playing
+    }
+
+    Typebot.initPopup({
+      typebot: "guest-feedback-survey-demo-wnbskpk",
+      prefilledVariables: {
+        "cabin_name": "Beach Retreat",
+        'first_name': "Satoshi",
+      },
+      autoShowDelay: 1000,
+      onNewInputBlock: (inputBlock) => {
+        console.log('New input block displayed', inputBlock.id)
+      },
+      onAnswer: (answer) => {
+        console.log('Answer received', answer.message, answer.blockId)
+        if (answer.blockId === "clcrb4kx8000v3b6mudh73ho6" && answer.message.includes("worse")) {
+          changeVideo("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4");
+        }
+        if (answer.blockId === "clcrb4kx8000v3b6mudh73ho6" && answer.message.includes("better")) {
+          changeVideo("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4");
+        }
+        if (answer.blockId === "clcrb4kx8000v3b6mudh73ho6" && answer.message.includes("same")) {
+          changeVideo("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4");
+        }
+      },
+      onInit: () => {
+        console.log('Bot initialized')
+      },
+      onEnd: () => {
+        changeVideo("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4");
+      },
+    });
+  </script>
+</body>
+</html>
